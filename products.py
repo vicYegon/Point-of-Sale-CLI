@@ -50,34 +50,34 @@ def addProduct():
 
 #updating a product entry        
 def updateProduct():
-    with open('products.txt', 'r+') as f:
-        
-        for line in f.readlines():
-            product_id = input('Enter customer id to update: ')
-            if id in line.split():
-                print('Product id found')
-                product_name = input('Enter product name: ')
-                new_product_price = input('Enter new product price: ')
+   with open('products.txt', 'r') as f:
+        fileInfo = f.readlines()
+        product_id = input("Enter id to update: ")
 
-                prod1 = Products(product_name, product_id , product_price = 0)
-                new_product_details = f'{product_id}--{product_name}--{new_product_price}\n'
-                line.replace(prod1.product_details, new_product_details)
-            else:
-                print('product Id not found. Product not available')
-                quit()
+        new_product_name = input('Enter new or previous name: ').upper()
+        new_product_price = input('Enter new product price: ')
+        product_quantity = input('Enter the new number of products after being added: ')
+        new_details = f'{product_id}--{new_product_name}--{new_product_price}--{product_quantity}\n'
+
+        for element in fileInfo:
+            if product_id in element:
+                line_index = fileInfo.index(element)
+
+    fileInfo[line_index] = new_details
+
+    with open('products.txt','w') as f:
+        f.writelines(new_details)
 
 #function to delete a product entry
 def deleteProduct():
-    product_id = input('Enter product id to delete: ')
-    with open("products.txt", "r+") as f:
-         for line in f.readlines():
-            product_details_words = line.split()
-            if product_details_words[0] == product_id:
-                print("Product id found")
-                f.truncate(line)
-            else:
-                print("Product id not found, try again")
-
+    with open('products.txt', 'r') as fr:
+    product_id = input("Enter product id to delete: ")
+    f = fr.readlines()
+    for line in f:
+        if product_id not in line:
+            with open('products.txt', 'w') as fw:
+                fw.write(line)
+print('Product details deleted')
 
 #appending product entry to a product text file
 def listAllProducts(): 

@@ -1,5 +1,4 @@
 
-
 class Products:
     def __init__(self, product_name, product_id, product_price, product_quantity):
         self.product_name = product_name
@@ -84,15 +83,3 @@ def listAllProducts():
     with open('products.txt', 'r') as f:
         product_list = f.read()
         print(product_list)
-
-
-
-
-
-
-
-
-
-
-#prod = Products(str, int, float)
-product_menu()

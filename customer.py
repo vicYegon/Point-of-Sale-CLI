@@ -85,16 +85,5 @@ def listAllCustomers():
     with open('customer.txt', 'r') as f:
         cus_list = f.read()
         print(cus_list)
-    
-#cus1 = Customer(int, str, str)
-
-customer_menu()
-
-
-
-
-
-    
-
-    
-
+        
+        

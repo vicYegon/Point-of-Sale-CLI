@@ -51,36 +51,33 @@ def addCustomerinfo():
 #function to update customer entry and replace with new details
 def updateCustomerinfo():
     with open('customer.txt', 'r+') as f:
-        customer_id = input("Enter id to update: ")
+        fileInfo = f.readlines()
+        cus_id = input("Enter id to update: ")
 
-        for line in f.readlines():
-            word_in_line = line.split('--')
-            if customer_id in word_in_line[0]:
-                print("id found")
-                customer_details = Customer(int, str, str)
-                new_name = input("Enter new name: ").upper()
-                new_address = input("Enter new address: ")
+        new_name = input('Enter new/old name: ').upper()
+        new_address = input('Enter new/town: ').upper()
+        new_details = f'{cus_id}--{new_name}--{new_address}\n'
 
-                c_newInfo = str(Customer(customer_id, new_name, new_address))
-                word_in_line.replace(customer_details, c_newInfo)
-                f_contents = f.write(c_newInfo)
-                print(f_contents)
-            
-            else:
-                print("Id not found")
-                quit()
-        
+        for element in fileInfo:
+            if cus_id in element:
+                line_index = fileInfo.index(element)
+
+    fileInfo[line_index] = new_details
+
+    with open('customer.txt','w') as f:
+        f.writelines(new_details)
 
 
 #method to remove specified customer entry
 def deleteCustomerinfo():
-    customer_id = input('Enter customer id to delete details: ')
-    with open("customer.txt", "r+") as f:
-        line = f.readlines()
-        for line in f:
-            customer_deatails_words = line.split('--')
-            if customer_id not in customer_deatails_words:
-                f.write(line)
+    with open('customer.txt', 'r') as fl:
+    customer_id = input("Enter customer id to delete: ")
+    f = fl.readlines()
+    for line in f:
+        if customer_id not in line:
+            with open('customer.txt', 'w') as fs:
+                fs.writelines(line)
+print('Customer details deleted successfully')
 
 
 #method to read all customer entry in customer file

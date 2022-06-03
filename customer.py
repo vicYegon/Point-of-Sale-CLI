@@ -50,7 +50,7 @@ def addCustomerinfo():
         
 #function to update customer entry and replace with new details
 def updateCustomerinfo():
-    with open('customer.txt', 'r+') as f:
+     with open('customer.txt', 'r') as f:
         fileInfo = f.readlines()
         cus_id = input("Enter id to update: ")
 
@@ -62,22 +62,26 @@ def updateCustomerinfo():
             if cus_id in element:
                 line_index = fileInfo.index(element)
 
-    fileInfo[line_index] = new_details
-
-    with open('customer.txt','w') as f:
-        f.writelines(new_details)
-
+                fileInfo[line_index] = new_details     
+            
+    with open('customer.txt','w') as fw:
+        for line in fileInfo:
+            print(fw.write(line))
+            break
 
 #method to remove specified customer entry
 def deleteCustomerinfo():
     with open('customer.txt', 'r') as fl:
     customer_id = input("Enter customer id to delete: ")
     f = fl.readlines()
+    j = 0
     for line in f:
-        if customer_id not in line:
-            with open('customer.txt', 'w') as fs:
-                fs.writelines(line)
-print('Customer details deleted successfully')
+        if customer_id in line:
+            f.pop(j)
+        j += 1
+    with open('customer.txt', 'w') as fs:
+    for line in f:
+        print(fs.write(line))
 
 
 #method to read all customer entry in customer file

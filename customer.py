@@ -35,9 +35,15 @@ def customer_menu():
 
 #prints customer list in a new line at the end of the customer.txt file
 def addCustomerinfo():
-    customer_name = input('Enter customer full name: ').upper()
-    customer_id = input('Enter customer ID number: ')
-    customer_town = input('Enter customer town of residence: ').upper()
+    with open('customer.txt','r') as fr:
+        customer_id = input('Enter customer ID number: ')
+        cus_list = fr.readlines()
+        for line in cus_list:
+            if cus_id in line.split('--'):
+                print('Customer ID already taken:')
+                quit()
+        customer_name = input('Enter customer full name: ').upper()
+        customer_town = input('Enter customer town of residence: ').upper()
 
     c_info = Customer(customer_id, customer_name, customer_town)
     
@@ -80,8 +86,8 @@ def deleteCustomerinfo():
             f.pop(j)
         j += 1
     with open('customer.txt', 'w') as fs:
-    for line in f:
-        print(fs.write(line))
+        for line in f:
+            print(fs.write(line))
 
 
 #method to read all customer entry in customer file

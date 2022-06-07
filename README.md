@@ -1,21 +1,29 @@
 # Point-of-Sale CLI system
 
-This is a point of sale system where a user can order and buy available products online through the command line interface. 
+  This is a point of sale system where a user can manage customer, product and purchases information which are stored 
+  in varied text files, and this is through the command line interface. 
 
 ## How to use the system
-
-1. The system can be downloaded, shared or cloned by the code for external use using the command line and a code editor.
-
-2. The user-admin can add, update and remove both customer and product information.
-
-3. When you start. there are both user menu and the admin menu. 
-
-4. For the user to order, you select the option for the purchases menu, while the admin can will need a password and user id to login to the customer and products menus.
-
+1. To be able to use the system. you have to run the main.py file
 
 ## Features
+the system has three main files 
+1. The customer file 
+  This file has a customer class and operations menu function which directs to various functions in the file. 
+  These functions help to, add new customer information, delete customer information and update customer 
+  information in the customer text file. More so, the user can list all the customer information in the terminal 
+  through the listallcustomers function. however it is not advised to use in cases where the information is large.
 
-### 1. How to order 
-By following the prompts and entering the options, the user will be able to make an order and a successful purchase. 
-
-
+2. The products file
+  Just like the customer file, the products file has a class Products and also the products-operation-menu function 
+  which directs to various fuctions that manipulate the products text file. These functions include the addproductinfo, 
+  deleteproductinfo, updateproductinfo and also the listallproductdetails functions/methods.
+  
+3. The purchases files
+  This file is used by the system be able to incorporate the use of all the files. This file contains a purchase class 
+  and menu function to durect to different functions in the file. They include, the purchase operations, print receipt 
+  and the order details functions.
+ 
+# Language used
+  The program is coded in python language.
+  

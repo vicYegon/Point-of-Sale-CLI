@@ -1,4 +1,5 @@
 import datetime
+from products import *
 from customer import Customer, updateCustomerinfo
 from products import Products, updateProduct
 import random
@@ -104,6 +105,7 @@ def purchase_operation():
                 print('Enter zero to quit')
                 quit()
             break
+        
 
     def sell_an_item():
         purch_det.product_price = prod_det[3]
@@ -145,21 +147,32 @@ def payment():
 
             ''')
     print_receipt()
-
+        
 def product_inventory():
     new_product_quantity = purch_det.product_quantity - purch_det.pieces_purchased
-    with open('products.txt', 'r+') as pl:
-        new_product_quantity = purch_det.product_quantity
-         
+    product_id = input('Enter ID for the purchased product')
+    with open('products.txt', 'w') as pl:
+        for line in pl:
+            if product_id in line:
+                product_line = line.split('--')
+                if product_id == product_line[0]:
+                    product_line[2] = new_product_quantity
+            pl.write(line)
+
 def print_receipt():
-    pass
-#   print(f'''
-#          -----hey, this is your receipt-----
-#           customer_name = purchase.customer_name
-#           total_amount_spent = TOTAL_AMOUNT_SPENT
-#           
-# 
-# ''')
+    print(f'''
+
+          -----hey, this is your receipt-----
+            
+            order ID           : {order_id}
+            customer_name      : {purch_det.customer_name}
+            products bought    : {PRODUCTS}
+            total_amount_spent : {sum(AMOUNT_SPENT)}
+            date               : {purch_det.date_of_purchase}
+            time               : {purch_det.time_of_purchase}
+
+        --------THANK YOU, WELCOME AGAIN--------
+    ''')
 def order_details():
-    with open('order.txt', 'a') as f:
+    with open('order.txt', 'a', end='') as f:
         f.write(order_details)

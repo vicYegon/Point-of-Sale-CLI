@@ -4,7 +4,7 @@
   in varied text files, and this is through the command line interface. 
 
 ## How to use the system
-1. To be able to use the system. you have to run the main.py file
+1. To be able to use the system. you have to run the [main.py] file
 
 ## Features
 the system has three main files 
@@ -25,5 +25,5 @@ the system has three main files
   and the order details functions.
  
 # Language used
-  The program is coded in python language.
+  The program is coded in `python` language.
   

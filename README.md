@@ -8,9 +8,9 @@
 
 ## Features
 The system has three main files:
-  #### The customer operations file
-  #### The product operations file
-  #### the purchases operations file
+  ##### - The customer operations file
+  ##### - The product operations file
+  ##### - The purchases operations file
 ### 1. The customer file 
   This file has a customer class and operations menu function which directs to various functions in the file. 
   These functions help to, add new customer information, delete customer information and update customer 

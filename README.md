@@ -7,7 +7,10 @@
 1. To be able to use the system. you have to run the [main.py](https://github.com/vicYegon/Point-of-Sale/blob/main/main.py) file
 
 ## Features
-the system has three main files 
+The system has three main files:
+  #### The customer operations file
+  #### The product operations file
+  #### the purchases operations file
 ### 1. The customer file 
   This file has a customer class and operations menu function which directs to various functions in the file. 
   These functions help to, add new customer information, delete customer information and update customer 

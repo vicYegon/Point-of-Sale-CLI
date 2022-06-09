@@ -4,7 +4,7 @@
   in varied text files, and this is through the command line interface. 
 
 ## How to use the system
-1. To be able to use the system. you have to run the `[main.py] file`
+1. To be able to use the system. you have to run the [main.py](https://github.com/vicYegon/Point-of-Sale/blob/main/main.py) file
 
 ## Features
 the system has three main files 

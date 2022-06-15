@@ -33,7 +33,12 @@ def order_menu():#function to direct what to do in the purchase file
                 \t3. Quit
                 ''') 
         
-        selection = int(input('\t Enter your option: '))     
+        selection = int(input('\t Enter your option: '))  
+
+        try:
+            int(selection)
+        except ValueError:
+            print('Invalid input!! Please enter a number' )   
     
         if selection == 1:
             purchase_operation()
@@ -48,6 +53,7 @@ def order_menu():#function to direct what to do in the purchase file
 
 # make purchase function
 def purchase_operation():
+    continue_purchase = True #initializing variable to be used later in code
     with open('customer.txt', 'r') as fc:
         cus_list = fc.readlines()
         customer_id = input('\t Enter customer id: ') #picks first customer by default
@@ -60,57 +66,66 @@ def purchase_operation():
                 print(f'''
                             Welcome {customer_name}.\n
                 ''')
-    
-    with open('products.txt', 'r') as fp:
-        prod_list = fp.readlines()
-        product_id = input('\t Enter product ID:')
-        for product_line in prod_list:
-            if product_id in product_line:
-                line_index = prod_list.index(product_line)
-                prod_det = product_line.split('--')
-                product_id = prod_det[0]
-                product_name = prod_det[1]
-                product_quantity = prod_det[2]
-                product_price = prod_det[3]
-                product_type = prod_det[4]
-                print(f'''
-                            You have selected {product_name}\n
-                            It costs Ksh. {product_price}\n
-                            There are {product_quantity} pieces in stock
-                    ''')
                 break
-        else: 
-            print("\tProduct not available")
-        PRODUCTS.append(product_name)
-
-        #select amount of pieces to purchase
-        pieces_purchased = int(input('\n \t How many pieces do you require?: '))
-        if int(pieces_purchased) > int(product_quantity):
-            print(f'''
-                    Purchases is more than the stock. 
-                    Products available : {product_quantity}
-            ''')
-            input('\n \t Enter new amount or buy something else')
-            purchase_operation()
-
         else:
-            TOTAL = pieces_purchased * int(product_price)
-            AMOUNT_SPENT.append(TOTAL)
-            print(f'\n\t You have spent Ksh.{TOTAL}')
+            print('Customer not available')
 
-        # making payments
-        cash = float(input('\t Enter the amount for payment: '))
-        if cash < TOTAL:
-            print('\n\t Amount not enough. Please add:'+ (TOTAL-cash))
-        else: 
-            if cash >= TOTAL:
-                cash_change = int(cash) - int(TOTAL)
+    while continue_purchase:
+        with open('products.txt', 'r') as fp:#open products file to perform various operations
+            prod_list = fp.readlines()
+            product_id = input('\t Enter product ID:')
+            for product_line in prod_list:
+                if product_id in product_line:
+                    line_index = prod_list.index(product_line)
+                    prod_det = product_line.split('--')
+                    product_id = prod_det[0]
+                    product_name = prod_det[1]
+                    product_quantity = prod_det[2]
+                    product_price = prod_det[3]
+                    product_type = prod_det[4]
+                    print(f'''
+                                You have selected {product_name}\n
+                                It costs Ksh. {product_price}\n
+                                There are {product_quantity} pieces in stock
+                        ''')
+                    PRODUCTS.append(product_name)
+                    break
+            else: 
+                print("\n\tProduct not available")
+
+        #Condition to enable purchase of another product
+        pick = input('\n\tEnter Yes to purchase another item or No continue').capitalize()
+        if pick == 'Yes':
+            continue_purchase = True
+        else:
+            #select amount of pieces to purchase
+            pieces_purchased = int(input('\n\tHow many pieces do you require?: '))
+            if int(pieces_purchased) > int(product_quantity):
                 print(f'''
-                        Transaction: {order_id}
-                        Your Name: {customer_name}
-                        Your change: {cash_change}
-                        Total spent: {TOTAL}
+                        Purchases is more than the stock. 
+                        Products available : {product_quantity}
                 ''')
+                input('\n\tEnter new amount or buy something else')
+                purchase_operation()
+
+            else:
+                TOTAL = pieces_purchased * int(product_price)
+                AMOUNT_SPENT.append(TOTAL)
+                print(f'\n\tYou have spent Ksh.{TOTAL}')
+
+            # making payments
+            cash = float(input('\n\tEnter the amount for payment: '))
+            if cash < TOTAL:
+                print('\n\t Amount not enough. Please add:'+ (TOTAL-cash))
+            else: 
+                if cash >= TOTAL:
+                    cash_change = int(cash) - int(TOTAL)
+                    print(f'''
+                            Transaction: {order_id}
+                            Your Name: {customer_name}
+                            Your change: {cash_change}
+                            Total spent: {sum(AMOUNT_SPENT)}
+                    ''')
 
     #object to instatiate the class
     pd = Purchases(order_id, product_quantity, product_price, product_name, customer_name)

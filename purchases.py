@@ -1,4 +1,4 @@
-from datetime import datetime as ds
+from datetime import date
 from customer import Customer, updateCustomerinfo
 from products import Products, updateProduct
 import random
@@ -9,6 +9,8 @@ TOTAL = 0
 PRODUCTS = []
 AMOUNT_SPENT = []
 
+today = date.today()
+t1 = today.strftime('%B %d %Y')
 
 class Purchases:
     def __init__(self, order_id, product_quantity, product_price, product_name, customer_name):
@@ -17,39 +19,34 @@ class Purchases:
         self.product_quantity = product_quantity
         self.product_price = product_price
         self.order_id = order_id
-        self.date_of_purchase = ds.date
-        self.time_of_purchase = ds.time
-
         
     def __str__(self):
-        self.order_details = f'''
-        order ID: {order_id}
-        customer name: {self.customer_name}
-        product name: {self.product_name}
-        amount: {sum(AMOUNT_SPENT)}
-        '''
+        self.order_details = f'{order_id}--{self.customer_name}--{PRODUCTS}--{sum(AMOUNT_SPENT)}'
         return self.order_details
 
+
 def order_menu():
-    print('''\n Select the order operation you would want to go through:
-            \t1. Select for purchase operation \n
-            \t2. Print order details
-            ''') 
+    while True:
+        print('''\n Select the order operation you would want to go through:
+                \t1. Purchase operation \n
+                \t2. Search Purchase transaction \n
+                \t3. Quit
+                ''') 
+        
+        selection = int(input('\t Enter your option: '))     
     
-    selection = int(input('\t Enter your option: '))
-    
-    while selection:
         if selection == 1:
             purchase_operation()
         elif selection == 2:
-            print_receipt()
+            search_transaction()
         elif selection == 3:
-            order_details()
+            from main import operations_menu
+            operations_menu()
         else:
-            print('\t Wrong input')
-            order_menu()     
-        break
-pd = Purchases(int, int, float, str, str)
+            print('\t Wrong input, try again')
+
+
+# make purchase function
 def purchase_operation():
     with open('customer.txt', 'r') as fc:
         cus_list = fc.readlines()
@@ -59,9 +56,9 @@ def purchase_operation():
             if customer_id in line:
                 cus_details = line.split('--')
                 customer_id = cus_details[0]
-                pd.customer_name = cus_details[1]
+                customer_name = cus_details[1]
                 print(f'''
-                            Welcome {pd.customer_name}.\n
+                            Welcome {customer_name}.\n
                 ''')
     
     with open('products.txt', 'r') as fp:
@@ -69,33 +66,40 @@ def purchase_operation():
         product_id = input('\t Enter product ID:')
         for product_line in prod_list:
             if product_id in product_line:
+                line_index = prod_list.index(product_line)
                 prod_det = product_line.split('--')
                 product_id = prod_det[0]
-                pd.product_name = prod_det[1]
-                pd.product_quantity = prod_det[2]
-                pd.product_price = prod_det[3]
+                product_name = prod_det[1]
+                product_quantity = prod_det[2]
+                product_price = prod_det[3]
+                product_type = prod_det[4]
                 print(f'''
-                            You have selected {pd.product_name}\n
-                            It costs Ksh. {pd.product_price}\n
-                            There are {pd.product_quantity} pieces in stock
+                            You have selected {product_name}\n
+                            It costs Ksh. {product_price}\n
+                            There are {product_quantity} pieces in stock
                     ''')
-        PRODUCTS.append(pd.product_name)
+                break
+        else: 
+            print("\tProduct not available")
+        PRODUCTS.append(product_name)
 
+        #select amount of pieces to purchase
         pieces_purchased = int(input('\n \t How many pieces do you require?: '))
-        if int(pieces_purchased) > int(pd.product_quantity):
+        if int(pieces_purchased) > int(product_quantity):
             print(f'''
                     Purchases is more than the stock. 
-                    Products available : {pd.product_quantity}
+                    Products available : {product_quantity}
             ''')
             input('\n \t Enter new amount or buy something else')
             purchase_operation()
 
         else:
-            TOTAL = pieces_purchased * int(pd.product_price)
+            TOTAL = pieces_purchased * int(product_price)
             AMOUNT_SPENT.append(TOTAL)
-            print(f'\n\t You have spent Ksh.{TOTAL}')        
+            print(f'\n\t You have spent Ksh.{TOTAL}')
 
-        cash = float(input('\t Enter the amount for payment:'))
+        # making payments
+        cash = float(input('\t Enter the amount for payment: '))
         if cash < TOTAL:
             print('\n\t Amount not enough. Please add:'+ (TOTAL-cash))
         else: 
@@ -103,30 +107,48 @@ def purchase_operation():
                 cash_change = int(cash) - int(TOTAL)
                 print(f'''
                         Transaction: {order_id}
-                        Your Name: {pd.customer_name}
+                        Your Name: {customer_name}
                         Your change: {cash_change}
                         Total spent: {TOTAL}
                 ''')
-            
 
-        print_receipt()
-def print_receipt():
+    #object to instatiate the class
+    pd = Purchases(order_id, product_quantity, product_price, product_name, customer_name)
+
+    #stock update inventory in product.txt
+    pd.product_quantity = prod_det[2]
+    new_product_quantity = int(product_quantity) - int(pieces_purchased)
+    new_product_details = f'{product_id}--{product_name}--{new_product_quantity}--{product_price}--{product_type}'
+
+    prod_list[line_index] = new_product_details
+    with open('products.txt', 'a+') as fq:
+        for line in fq.read():
+            p_contents = fq.write(line)
+            print(p_contents)
+
+    # print order details to order.txt
+    with open('order.txt', 'a') as f:
+        f.write(pd.__str__())
+
+    # printing receipt
     total_spent = sum(AMOUNT_SPENT)
     print(f'''
         -----This is the receipt for the transaction-----
                 
             Order ID           : {order_id}
-            Customer_name      : {pd.customer_name}
+            Customer_name      : {customer_name}
             Products bought    : {PRODUCTS}
             Total_amount_spent : {total_spent}
-            Date               : {pd.date_of_purchase}
-            Time               : {pd.time_of_purchase}
+            Date               : {t1}
         --------THANK YOU, WELCOME AGAIN--------
     ''')
-    order_details()
+    from main import operations_menu
+    operations_menu()
 
-def order_details():
-    with open('order.txt', 'a') as f:
-        f.write(pd.__str__())
-
-order_menu()
+def search_transaction():
+    purchase_ID = input('\tEnter the purchase id to search transaction: ')
+    with open('order.txt', 'r') as f:
+        f_list = f.readlines()
+        for line in f_list:
+            if purchase_ID in line:
+                print(line)

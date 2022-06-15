@@ -1,4 +1,5 @@
 
+
 class Products:
     def __init__(self, product_id, product_name, product_type, product_price, product_quantity):
         self.product_name = product_name
@@ -21,6 +22,12 @@ def product_menu():
                     5. List all products
         ''')
         selection = int(input('\tEnter your selection: '))
+        #input exception handling
+        try:
+            int(selection)
+        except ValueError:
+            print('Invalid input!! Please enter a number' )
+
         if selection == 1:
             addProductinfo()
             break
@@ -57,11 +64,10 @@ def addProductinfo():
         print(f_contents)
     
     product_menu()
-
-#updating a product entry        
-def updateProduct():
+     
+def updateProduct(): #updating a product entry   
     
-    with open('products.txt', 'r') as f:# open products text file
+    with open('products.txt', 'r') as f:    # open products text file
         fileInfo = f.readlines()
         product_id = input("\tEnter id to update: \n")
         for line in fileInfo:
@@ -72,7 +78,8 @@ def updateProduct():
                 product_price = f[2]
                 product_quantity = f[3]
                 product_type = f[4]
-        while True:
+        
+        while True: #loop choices if pick is wrong
             print('''
                 What would you want to update?
                     1. Change product name
@@ -82,24 +89,30 @@ def updateProduct():
             
             ''')
             pick = int(input('\n\tPick what you would wish to change: '))
+            # input exception handling
+            try:
+                int(pick)
+            except ValueError:
+                print('\n\tInvalid input!! Please enter a number' )
+
             if pick == 1:
-                new_product_name = input('\t Enter new name: ').capitalize()
+                new_product_name = input('\n\t Enter new name: ').capitalize()
                 new_details = f'{product_id} -- {new_product_name} -- {product_price} -- {product_quantity} -- {product_type}'
                 break
             elif pick == 2:
-                new_product_price = input('\t Enter new product price: ')
+                new_product_price = input('\n\t Enter new product price: ')
                 new_details = f'{product_id} -- {product_name} -- {new_product_price} -- {product_quantity} -- {product_type}'
                 break
             elif pick == 3:
-                new_product_quantity = input('\tEnter the new number of products after being added: ')
+                new_product_quantity = input('\n\tEnter the new number of products after being added: ')
                 new_details = f'{product_id} -- {product_name} -- {product_price} -- {new_product_quantity} -- {product_type}'
                 break
             elif pick == 4:
-                new_product_type = input('\tEnter new product category: ').capitalize()
+                new_product_type = input('\n\tEnter new product category: ').capitalize()
                 new_details = f'{product_id} -- {product_name} -- {product_price} -- {product_quantity} -- {new_product_type}'
                 break
             else:
-                print('\tPlease select again the correct answer')
+                print('\n\tPlease select again the correct answer')
                 
     fileInfo[line_index] = new_details 
     
@@ -110,7 +123,7 @@ def updateProduct():
 #function to delete a product entry
 def deleteProductinfo():
     with open('products.txt', 'r') as fl:
-        product_id = input("\tEnter customer id to delete: ")
+        product_id = input("\n\tEnter customer id to delete: ")
         f = fl.readlines()
         p = 0
         for line in f:
@@ -121,7 +134,7 @@ def deleteProductinfo():
         for line in f:
             print(fs.write(line))
 
-    print('\t----Product deleted successfully----')
+    print('\n\t----Product deleted successfully----')
 
 #search product either by ID/name
 def searchProduct():
@@ -135,19 +148,18 @@ def searchProduct():
                     \t1. Search by ID
                     \t2. Search by Name
             ''')
-            pick = int(input('Enter option to search by: '))
+            pick = int(input('\n\tEnter option to search by: '))
             if pick == 1:
-                product_id = input('Enter product id: ')
+                product_id = input('\n\tEnter product id: ')
                 if product_id == v[0]:
                     print(line)
             elif pick == 2:
-                product_name = input('Enter product name: ')
+                product_name = input('\n\tEnter product name: ')
                 if product_name == v[1]:
                     print(line)
             else:
-                print('Invalid input. Try again!')
+                print('\n\tInvalid input. Try again!')
             
-
 #printing product entry to a 
 def listAllProducts(): 
     with open('products.txt', 'r') as f:

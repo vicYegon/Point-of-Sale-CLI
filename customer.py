@@ -1,7 +1,3 @@
-
-
-
-
 class Customer:
     def __init__(self, customer_id, customer_name, customer_town):
         self.customer_id = customer_id
@@ -14,18 +10,19 @@ class Customer:
     
 # customer operations menu    
 def customer_menu():
-
-    print('''
-                Select what to do with the customer entry: 
-                        1. Add customer
-                        2. Update customer            
-                        3. Delete customer
-                        4. List all customer entry
-    ''')
-    
-    selection = int(input("Enter your selection: "))
-    
-    while selection:
+    while True:
+        print('''
+                    Select what to do with the customer entry: 
+                            1. Add customer
+                            2. Update customer            
+                            3. Delete customer
+                            4. List all customer entry
+                            5. Search for specific customer details
+                            0. To main menu
+        ''')
+        
+        selection = int(input("\tEnter your selection: "))
+        
         if selection == 1:
             addCustomerinfo()
         elif selection == 2:
@@ -34,24 +31,29 @@ def customer_menu():
             deleteCustomerinfo()
         elif selection == 4:
             listAllCustomers()
+        elif selection == 5:
+            search_customer_details()
+        elif selection == 0:
+            from main import operations_menu
+            operations_menu()
         else:
-            print('Invalid Option')
-            quit()
-        break
-
+            print('''\tInvalid Option, 
+                       Please try again or press zero to quit to main menu!''')
+        
 
 # prints customer list in a new line at the end of the customer.txt file
 def addCustomerinfo():
-    with open('customer.txt', 'r') as cus_list:
-        list_items = cus_list.readlines()
-        customer_id = input("Enter customer id number: ")
+    with open('customer.txt', 'r') as f:
+        list_items = f.readlines()
+        print(list_items)
+        customer_id = input("\t Enter customer id number: ")
         for line in list_items:
             if str(customer_id) in line.split('--'):
-                print('Customer id already taken')
+                print('\t Customer id already taken')
                 quit()
 
-        customer_name = input("Enter customer name: ").upper()
-        customer_address = input("Enter customer town of residence: ").upper()
+        customer_name = input("\t Enter customer name: ").upper()
+        customer_address = input("\n\t Enter customer town of residence: ").upper()
     
     c_info = Customer(customer_id, customer_name, customer_address)
 
@@ -66,21 +68,47 @@ def addCustomerinfo():
 def updateCustomerinfo():
     with open('customer.txt', 'r') as f:
         fileInfo = f.readlines()
-        cus_id = input("Enter id to update: ")
+        cus_id = input("\t Enter id to update: ")
 
-        new_name = input('Enter new/old name: ').upper()
-        new_address = input('Enter new/town: ').upper()
-        new_details = f'{cus_id}--{new_name}--{new_address}\n'
 
         for element in fileInfo:
             if cus_id in element:
                 line_index = fileInfo.index(element)
+                v = fileInfo[line_index]
+                l = v.split('--')
+                customer_name = l[1]
+                customer_address =l[2]
+                break
+            # while True:
 
-    fileInfo[line_index] = new_details
+        print('''
+                \t1. Change customer name
+                \t2. Change customer address
+        ''')
+        
+        pick = int(input('\n\t Select what to change: '))
+        if pick == 1:    
+            new_name = input('\n\tEnter new name: ').upper()
+            l[1] = new_name
+            new_details = f'{cus_id}--{new_name}--{customer_address}'
+        elif pick == 2:
+            new_address = input('\n\tEnter new town: ').upper()
+            l[2] = new_address
+            new_details = f'{cus_id}--{customer_name}--{new_address}'    
+        else:
+            print('Invalid option')
+
+
+        #new_details = f'{cus_id}--{new_name}--{new_address}\n'
+
+        fileInfo[line_index] = new_details
                                  
     with open('customer.txt','w') as fw:
         for line in fileInfo:
-            print(fw.write(line))
+            fw.write(line)
+    print('''
+            ------Customer Updated Successfuly------
+    ''')
     
     customer_menu()
 
@@ -102,9 +130,17 @@ def deleteCustomerinfo():
                     -----Customer deleted successfully-----
         ''')
 
+def search_customer_details():
+    with open('customer.txt', 'r') as f:
+        customer_id = input('\tEnter customer ID to search: ')
+        for line in f:
+            line_list = line.split()
+            if customer_id == line_list[0]:
+                print(line)
+
+
+
 def listAllCustomers():
     with open('customer.txt', 'r') as f:
         cus_list = f.read()
         print(cus_list)
-    
-customer_menu()

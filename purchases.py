@@ -20,12 +20,12 @@ class Purchases:
         self.product_price = product_price
         self.order_id = order_id
         
-    def __str__(self):
-        self.order_details = f'{order_id}--{self.customer_name}--{PRODUCTS}--{sum(AMOUNT_SPENT)}'
+    def __str__(self):#function to print purchase details
+        self.order_details = f'{order_id}--{self.customer_name}--{PRODUCTS}--{TOTAL}'
         return self.order_details
 
 
-def order_menu():
+def order_menu():#function to direct what to do in the purchase file
     while True:
         print('''\n Select the order operation you would want to go through:
                 \t1. Purchase operation \n
@@ -145,6 +145,7 @@ def purchase_operation():
     from main import operations_menu
     operations_menu()
 
+#search for a transaction using ID
 def search_transaction():
     purchase_ID = input('\tEnter the purchase id to search transaction: ')
     with open('order.txt', 'r') as f:

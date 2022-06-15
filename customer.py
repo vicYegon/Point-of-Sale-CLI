@@ -21,7 +21,11 @@ def customer_menu():
                             0. To main menu
         ''')
         
-        selection = int(input("\tEnter your selection: "))
+        selection = input("\tEnter your selection: ")
+        try:
+            int(selection)
+        except ValueError:
+            print('Invalid input!! Please enter a number' )
         
         if selection == 1:
             addCustomerinfo()
@@ -40,7 +44,6 @@ def customer_menu():
             print('''\tInvalid Option, 
                        Please try again or press zero to quit to main menu!''')
         
-
 # prints customer list in a new line at the end of the customer.txt file
 def addCustomerinfo():
     with open('customer.txt', 'r') as f:
@@ -62,14 +65,12 @@ def addCustomerinfo():
         print(f_contents)
     
     customer_menu()
-
-        
+      
 # function to update customer entry and replace with new details
 def updateCustomerinfo():
     with open('customer.txt', 'r') as f:
         fileInfo = f.readlines()
         cus_id = input("\t Enter id to update: ")
-
 
         for element in fileInfo:
             if cus_id in element:
@@ -79,14 +80,17 @@ def updateCustomerinfo():
                 customer_name = l[1]
                 customer_address =l[2]
                 break
-            # while True:
 
         print('''
                 \t1. Change customer name
                 \t2. Change customer address
         ''')
         
-        pick = int(input('\n\t Select what to change: '))
+        pick = input('\n\t Select what to change: ')
+        try:
+            int(pick)
+        except ValueError:
+            print('Invalid input!! Please enter a number' )
         if pick == 1:    
             new_name = input('\n\tEnter new name: ').upper()
             l[1] = new_name
@@ -97,9 +101,6 @@ def updateCustomerinfo():
             new_details = f'{cus_id}--{customer_name}--{new_address}'    
         else:
             print('Invalid option')
-
-
-        #new_details = f'{cus_id}--{new_name}--{new_address}\n'
 
         fileInfo[line_index] = new_details
                                  
@@ -137,8 +138,6 @@ def search_customer_details():
             line_list = line.split()
             if customer_id == line_list[0]:
                 print(line)
-
-
 
 def listAllCustomers():
     with open('customer.txt', 'r') as f:

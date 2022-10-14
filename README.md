@@ -1,5 +1,7 @@
 # Point-of-Sale CLI system
 
+![point-of-sale-system-1](https://user-images.githubusercontent.com/84603202/195943696-f66ab452-ce3b-41be-b1fa-5a7c0ce5095d.jpg)
+
   This is a point of sale system where a user can manage customer, product and purchases information which are stored 
   in varied text files, and this is through the command line interface. 
 
